@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Я тебя люблю — на 100 языках ❤️</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0F0C29 0%, #302B63 50%, #24243E 100%);
+    background-attachment: fixed;
+    font-family: 'Inter', sans-serif;
+    color: #fff;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* ===== ЗВЁЗДНЫЙ ФОН ===== */
+  #stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* ===== КОНТЕЙНЕР ===== */
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 60px 20px;
+  }
+
+  /* ===== ЗАГОЛОВОК ===== */
+  header {
+    text-align: center;
+    margin-bottom: 70px;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 6vw, 4.5rem);
+    background: linear-gradient(90deg, #ff6ec4, #7873f5, #4ADEDE, #ff6ec4);
+    background-size: 300% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientShift 8s ease infinite;
+    margin-bottom: 15px;
+    letter-spacing: 2px;
+  }
+
+  @keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  .subtitle {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.6);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    font-weight: 300;
+  }
+
+  .heart {
+    display: inline-block;
+    animation: pulse 1.4s ease-in-out infinite;
+    filter: drop-shadow(0 0 15px #ff2d75);
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.25); }
+  }
+
+  /* ===== СЕТКА КАРТОЧЕК ===== */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 22px;
+  }
+
+  /* ===== КАРТОЧКА ===== */
+  .card {
+    position: relative;
+    padding: 24px 18px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    overflow: hidden;
+    text-align: center;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: 16px;
+    padding: 1px;
+    background: linear-gradient(135deg, #ff6ec4, #7873f5, #4ADEDE);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+
+  .card:hover::before {
+    opacity: 1;
+  }
+
+  .card:hover {
+    transform: translateY(-8px) scale(1.03);
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 20px 50px rgba(120, 115, 245, 0.5),
+                0 0 40px rgba(255, 110, 196, 0.3);
+  }
+
+  .flag {
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  .lang {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 12px;
+  }
+
+  .phrase {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.35rem;
+    color: #fff;
+    line-height: 1.3;
+    text-shadow: 0 0 20px rgba(255, 110, 196, 0.5);
+  }
+
+  .pron {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.35);
+    margin-top: 8px;
+    font-style: italic;
+  }
+
+  /* ===== ЭФФЕКТ "КОМЕТЫ" ПРИ КЛИКЕ ===== */
+  .comet {
+    position: fixed;
+    font-size: 1.5rem;
+    pointer-events: none;
+    z-index: 9999;
+    animation: flyAway 1.2s ease-out forwards;
+  }
+
+  @keyframes flyAway {
+    0% {
+      transform: translate(0, 0) scale(1);
+      opacity: 1;
+    }
+    100% {
+      transform: translate(var(--x), var(--y)) scale(0.3);
+      opacity: 0;
+    }
+  }
+
+  /* ===== ПОДВАЛ ===== */
+  footer {
+    text-align: center;
+    margin-top: 80px;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+  }
+
+  footer .big-heart {
+    font-size: 1.5rem;
+    display: inline-block;
+    animation: pulse 1.4s infinite;
+    margin: 0 6px;
+  }
+</style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+
+<div class="container">
+  <header>
+    <h1>Я тебя люблю <span class="heart">❤️</span></h1>
+    <p class="subtitle">на 100 языках мира</p>
+  </header>
+
+  <div class="grid" id="grid"></div>
+
+  <footer>
+    Сделано с <span class="big-heart">❤️</span> специально для тебя
+  </footer>
+</div>
+
+<script>
+  /* ============================================
+     СПИСОК ЯЗЫКОВ (можешь дополнять до 100)
+     ============================================ */
+  const phrases = [
+    { flag: "🇷🇺", lang: "Русский",      text: "Я тебя люблю",        pron: "ya tebya lyublyu" },
+    { flag: "🇬🇧", lang: "English",      text: "I love you",          pron: "ai lav yu" },
+    { flag: "🇫🇷", lang: "Français",     text: "Je t'aime",           pron: "zhyo tem" },
+    { flag: "🇩🇪", lang: "Deutsch",      text: "Ich liebe dich",      pron: "ih libe dih" },
+    { flag: "🇪🇸", lang: "Español",      text: "Te quiero",           pron: "te kyero" },
+    { flag: "🇮🇹", lang: "Italiano",     text: "Ti amo",              pron: "ti amo" },
+    { flag: "🇵🇹", lang: "Português",    text: "Eu te amo",           pron: "eu chi amu" },
+    { flag: "🇯🇵", lang: "日本語",        text: "愛してる",             pron: "aishiteru" },
+    { flag: "🇨🇳", lang: "中文",          text: "我爱你",               pron: "wo ai ni" },
+    { flag: "🇰🇷", lang: "한국어",        text: "사랑해",               pron: "saranghae" },
+    { flag: "🇸🇦", lang: "العربية",      text: "أحبك",                pron: "uhibbuka" },
+    { flag: "🇮🇳", lang: "हिन्दी",        text: "मैं तुमसे प्यार करता हूँ", pron: "main tumse pyar karta hun" },
+    { flag: "🇹🇷", lang: "Türkçe",       text: "Seni seviyorum",      pron: "seni seviyorum" },
+    { flag: "🇬🇷", lang: "Ελληνικά",     text: "Σ' αγαπώ",            pron: "s'agapo" },
+    { flag: "🇵🇱", lang: "Polski",       text: "Kocham cię",          pron: "koham che" },
+    { flag: "🇳🇱", lang: "Nederlands",   text: "Ik hou van jou",      pron: "ik hau fan yau" },
+    { flag: "🇸🇪", lang: "Svenska",      text: "Jag älskar dig",      pron: "ya elskar dei" },
+    { flag: "🇳🇴", lang: "Norsk",        text: "Jeg elsker deg",      pron: "yai elsker dai" },
+    { flag: "🇩🇰", lang: "Dansk",        text: "Jeg elsker dig",      pron: "yai elsker dai" },
+    { flag: "🇫🇮", lang: "Suomi",        text: "Rakastan sinua",      pron: "rakastan sinua" },
+    { flag: "🇨🇿", lang: "Čeština",      text: "Miluji tě",           pron: "miluyi tye" },
+    { flag: "🇭🇺", lang: "Magyar",       text: "Szeretlek",           pron: "seretlek" },
+    { flag: "🇷🇴", lang: "Română",       text: "Te iubesc",           pron: "te yubesk" },
+    { flag: "🇧🇬", lang: "Български",    text: "Обичам те",           pron: "obicham te" },
+    { flag: "🇺🇦", lang: "Українська",   text: "Я тебе кохаю",        pron: "ya tebe kokhayu" },
+    { flag: "🇧🇾", lang: "Беларуская",   text: "Я цябе кахаю",        pron: "ya tsyabe kakayu" },
+    { flag: "🇮🇱", lang: "עברית",        text: "אני אוהב אותך",       pron: "ani ohev otakh" },
+    { flag: "🇹🇭", lang: "ไทย",          text: "ผมรักคุณ",             pron: "phom rak khun" },
+    { flag: "🇻🇳", lang: "Tiếng Việt",   text: "Anh yêu em",          pron: "an yeu em" },
+    { flag: "🇮🇩", lang: "Indonesia",    text: "Aku cinta kamu",      pron: "aku cinta kamu" },
+    { flag: "🇲🇾", lang: "Melayu",       text: "Saya cinta awak",     pron: "saya cinta awak" },
+    { flag: "🇵🇭", lang: "Filipino",     text: "Mahal kita",          pron: "mahal kita" },
+    { flag: "🇮🇸", lang: "Íslenska",     text: "Ég elska þig",        pron: "yeg elska thig" },
+    { flag: "🇮🇪", lang: "Gaeilge",      text: "Is breá liom tú",     pron: "is bra lyum tu" },
+    { flag: "🇭🇷", lang: "Hrvatski",     text: "Volim te",            pron: "volim te" },
+    { flag: "🇷🇸", lang: "Српски",       text: "Волим те",            pron: "volim te" },
+    { flag: "🇱🇹", lang: "Lietuvių",     text: "Aš tave myliu",       pron: "ash tave myliu" },
+    { flag: "🇱🇻", lang: "Latviešu",     text: "Es tevi mīlu",        pron: "es tevi milu" },
+    { flag: "🇪🇪", lang: "Eesti",        text: "Ma armastan sind",    pron: "ma armastan sind" },
+    { flag: "🇬🇪", lang: "ქართული",      text: "მე შენ მიყვარხარ",    pron: "me shen mikvarkhar" },
+    { flag: "🇦🇲", lang: "Հայերեն",      text: "Ես քեզ սիրում եմ",     pron: "yes k'ez sirum yem" },
+    { flag: "🇮🇷", lang: "فارسی",        text: "دوستت دارم",          pron: "doostet daram" },
+    { flag: "🇺🇿", lang: "O'zbek",       text: "Men seni sevaman",    pron: "men seni sevaman" },
+    { flag: "🇰🇿", lang: "Қазақша",      text: "Мен сені сүйемін",    pron: "men seni suyemin" },
+    { flag: "🇦🇿", lang: "Azərbaycan",   text: "Mən səni sevirəm",    pron: "men seni seviram" },
+    { flag: "🇲🇳", lang: "Монгол",       text: "Би чамд хайртай",     pron: "bi chamd khairtai" },
+    { flag: "🇳🇵", lang: "नेपाली",       text: "म तिमीलाई माया गर्छु", pron: "ma timilai maya garchu" },
+    { flag: "🇧🇩", lang: "বাংলা",        text: "আমি তোমাকে ভালোবাসি", pron: "ami tomake bhalobashi" },
+    { flag: "🇱🇰", lang: "සිංහල",        text: "මම ඔයාට ආදරෙයි",     pron: "mama oyata adareyi" },
+    { flag: "🇰🇪", lang: "Kiswahili",    text: "Nakupenda",           pron: "nakupenda" },
+    { flag: "🇿🇦", lang: "Zulu",         text: "Ngiyakuthanda",       pron: "ngiyakuthanda" },
+    { flag: "🇪🇹", lang: "አማርኛ",         text: "እወድሻለሁ",             pron: "ewedishalehu" },
+    { flag: "🇳🇬", lang: "Yoruba",       text: "Mo nifẹ rẹ",          pron: "mo nife re" },
+    { flag: "🇪🇬", lang: "مصرى",         text: "بحبك",                pron: "bahebbak" },
+    { flag: "🇲🇦", lang: "الدارجة",      text: "كنبغيك",              pron: "kanbghik" },
+    { flag: "🇭🇹", lang: "Kreyòl",       text: "Mwen renmen ou",      pron: "mwen renmen ou" },
+    { flag: "🇵🇪", lang: "Quechua",      text: "Kuyayki",             pron: "kuyayki" },
+    { flag: "🇳🇿", lang: "Māori",        text: "Kei te aroha au ki a koe", pron: "kei te aroha au ki a koe" },
+    { flag: "🇼🇸", lang: "Samoan",       text: "Ou te alofa ia te oe", pron: "ou te alofa ia te oe" },
+    { flag: "🇹🇴", lang: "Tongan",       text: "Oku ou ofa atu",      pron: "oku ou ofa atu" },
+    { flag: "🇫🇯", lang: "Fijian",       text: "Au domoni iko",       pron: "au domoni iko" },
+    { flag: "🇵🇭", lang: "Cebuano",      text: "Gihigugma tika",      pron: "gihigugma tika" },
+    { flag: "🇲🇹", lang: "Malti",        text: "Inħobbok",            pron: "inhobbok" },
+    { flag: "🇦🇱", lang: "Shqip",        text: "Të dua",              pron: "te dua" },
+    { flag: "🇲🇰", lang: "Македонски",   text: "Те сакам",            pron: "te sakam" },
+    { flag: "🇸🇮", lang: "Slovenščina",  text: "Ljubim te",           pron: "lyubim te" },
+    { flag: "🇸🇰", lang: "Slovenčina",   text: "Ľúbim ťa",            pron: "lyubim tya" },
+    { flag: "🇱🇺", lang: "Lëtzebuergesch", text: "Ech hunn dech gär", pron: "eh hun deh gear" },
+    { flag: "🇨🇭", lang: "Schwyzerdütsch", text: "Ich ha di lieb",    pron: "ih ha di lib" },
+    { flag: "🇦🇹", lang: "Österreichisch", text: "I liab di",         pron: "i liab di" },
+    { flag: "🇧🇪", lang: "Vlaams",       text: "Ik zie je graag",     pron: "ik zi ye graag" },
+    { flag: "🇨🇦", lang: "Québécois",    text: "Je t'aime",           pron: "zhe tem" },
+    { flag: "🇲🇽", lang: "Español MX",   text: "Te amo",              pron: "te amo" },
+    { flag: "🇦🇷", lang: "Español AR",   text: "Te quiero mucho",     pron: "te kyero mucho" },
+    { flag: "🇨🇺", lang: "Español CU",   text: "Te adoro",            pron: "te adoro" },
+    { flag: "🇨🇱", lang: "Español CL",   text: "Te amo harto",        pron: "te amo arto" },
+    { flag: "🇨🇴", lang: "Español CO",   text: "Lo quiero mucho",     pron: "lo kyero mucho" },
+    { flag: "🇻🇪", lang: "Español VE",   text: "Te amo mi amor",      pron: "te amo mi amor" },
+    { flag: "🏴󠁧󠁢󠁳󠁣󠁴󠁿", lang: "Gàidhlig",     text: "Tha gaol agam ort",   pron: "ha geul akam orst" },
+    { flag: "🏴󠁧󠁢󠁷󠁬󠁳󠁿", lang: "Cymraeg",      text: "Rwy'n dy garu di",    pron: "ruyn du garu di" },
+    { flag: "🇧🇦", lang: "Bosanski",     text: "Volim te",            pron: "volim te" },
+    { flag: "🇲🇪", lang: "Crnogorski",   text: "Volim te",            pron: "volim te" },
+    { flag: "🇽🇰", lang: "Shqip (KS)",   text: "Të dua shumë",        pron: "te dua shume" },
+    { flag: "🇸🇾", lang: "سوري",         text: "بحبك كتير",           pron: "bahebbak ktir" },
+    { flag: "🇱🇧", lang: "لبناني",       text: "بحبك",                pron: "bahebbak" },
+    { flag: "🇯🇴", lang: "أردني",        text: "بحبك",                pron: "bahebbak" },
+    { flag: "🇮🇶", lang: "عراقي",        text: "أحبك",                pron: "uhibbuk" },
+    { flag: "🇰🇼", lang: "كويتي",        text: "أحبك",                pron: "ahebbik" },
+    { flag: "🇦🇪", lang: "إماراتي",      text: "أحبك",                pron: "ahebbik" },
+    { flag: "🇸🇩", lang: "سوداني",       text: "بديتك",               pron: "bidaytak" },
+    { flag: "🇹🇳", lang: "تونسي",        text: "نحبك",                pron: "nhebbik" },
+    { flag: "🇩🇿", lang: "جزائري",       text: "نحبك",                pron: "nhebbik" },
+    { flag: "🇱🇾", lang: "ليبي",         text: "نحبك",                pron: "nhebbik" },
+    { flag: "🇾🇪", lang: "يمني",         text: "أحبك",                pron: "ahebbik" },
+    { flag: "🇴🇲", lang: "عماني",        text: "أحبك",                pron: "ahebbik" },
+    { flag: "🇧🇭", lang: "بحريني",       text: "أحبك",                pron: "ahebbik" },
+    { flag: "🇶🇦", lang: "قطري",         text: "أحبك",                pron: "ahebbik" }
+  ];
+
+  /* ============================================
+     РЕНДЕР КАРТОЧЕК
+     ============================================ */
+  const grid = document.getElementById('grid');
+  phrases.forEach(p => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <span class="flag">${p.flag}</span>
+      <div class="lang">${p.lang}</div>
+      <div class="phrase">${p.text}</div>
+      <div class="pron">${p.pron}</div>
+    `;
+    card.addEventListener('click', (e) => createComet(e, p.text));
+    grid.appendChild(card);
+  });
+
+  /* ============================================
+     ЭФФЕКТ КОМЕТЫ ПРИ КЛИКЕ
+     ============================================ */
+  function createComet(e, text) {
+    const comet = document.createElement('div');
+    comet.className = 'comet';
+    comet.textContent = '❤️ ' + text;
+    comet.style.left = e.clientX + 'px';
+    comet.style.top = e.clientY + 'px';
+    comet.style.setProperty('--x', (Math.random() * 400 - 200) + 'px');
+    comet.style.setProperty('--y', (-300 - Math.random() * 200) + 'px');
+    comet.style.color = '#ff6ec4';
+    comet.style.textShadow = '0 0 20px #ff6ec4, 0 0 40px #7873f5';
+    document.body.appendChild(comet);
+    setTimeout(() => comet.remove(), 1200);
+  }
+
+  /* ============================================
+     ЗВЁЗДНЫЙ ФОН (canvas)
+     ============================================ */
+  const canvas = document.getElementById('stars');
+  const ctx = canvas.getContext('2d');
+  let stars = [];
+  let shootingStars = [];
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    initStars();
+  }
+
+  function initStars() {
+    stars = [];
+    const count = Math.floor((canvas.width * canvas.height) / 6000);
+    for (let i = 0; i < count; i++) {
+      stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 1.5 + 0.3,
+        alpha: Math.random(),
+        speed: Math.random() * 0.015 + 0.005
+      });
+    }
+  }
+
+  function drawStars() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Обычные звёзды
+    stars.forEach(s => {
+      s.alpha += s.speed;
+      const opacity = Math.abs(Math.sin(s.alpha));
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255, 255, 255, ${opacity})`;
+      ctx.shadowBlur = 8;
+      ctx.shadowColor = '#fff';
+      ctx.fill();
+    });
+
+    // Падающие звёзды
+    shootingStars.forEach((star, i) => {
+      star.x += star.vx;
+      star.y += star.vy;
+      star.life -= 1;
+
+      ctx.beginPath();
+      ctx.moveTo(star.x, star.y);
+      ctx.lineTo(star.x - star.vx * 8, star.y - star.vy * 8);
+      const grad = ctx.createLinearGradient(star.x, star.y, star.x - star.vx * 8, star.y - star.vy * 8);
+      grad.addColorStop(0, `rgba(255, 255, 255, ${star.life / 100})`);
+      grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      if (star.life <= 0) shootingStars.splice(i, 1);
+    });
+
+    requestAnimationFrame(drawStars);
+  }
+
+  // Спавн падающих звёзд
+  setInterval(() => {
+    if (Math.random() > 0.6) {
+      shootingStars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height * 0.5,
+        vx: 3 + Math.random() * 3,
+        vy: 1.5 + Math.random() * 2,
+        life: 100
+      });
+    }
+  }, 1200);
+
+  window.addEventListener('resize', resize);
+  resize();
+  drawStars();
+</script>
+
+</body>
+</html>
